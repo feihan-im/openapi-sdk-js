@@ -1,6 +1,6 @@
 {
   "name": "@feihan-im/sdk",
-  "version": "0.28.106",
+  "version": "0.28.107",
   "description": "飞函官方 OpenAPI SDK，支持 Node.js 和 Browser",
   "author": "上海飞函安全科技有限公司",
   "type": "module",
