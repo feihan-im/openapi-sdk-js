@@ -13,25 +13,25 @@ export class DefaultLogger implements Logger {
 
   debug(msg: string, ...args: unknown[]): void {
     if (this.level <= LoggerLevel.Debug) {
-      console.debug(`[fhsdk] DEBUG ${msg}`, ...args);
+      console.debug(`[Feihan] DEBUG ${msg}`, ...args);
     }
   }
 
   info(msg: string, ...args: unknown[]): void {
     if (this.level <= LoggerLevel.Info) {
-      console.info(`[fhsdk] INFO ${msg}`, ...args);
+      console.info(`[Feihan] INFO ${msg}`, ...args);
     }
   }
 
   warn(msg: string, ...args: unknown[]): void {
     if (this.level <= LoggerLevel.Warn) {
-      console.warn(`[fhsdk] WARN ${msg}`, ...args);
+      console.warn(`[Feihan] WARN ${msg}`, ...args);
     }
   }
 
   error(msg: string, ...args: unknown[]): void {
     if (this.level <= LoggerLevel.Error) {
-      console.error(`[fhsdk] ERROR ${msg}`, ...args);
+      console.error(`[Feihan] ERROR ${msg}`, ...args);
     }
   }
 }

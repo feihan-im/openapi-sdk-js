@@ -1,8 +1,8 @@
 # 飞函 IM OpenAPI SDK - JavaScript
 
-[![npm version](https://img.shields.io/npm/v/@feihan-im/openapi-sdk.svg)](https://www.npmjs.com/package/@feihan-im/openapi-sdk)
+[![npm version](https://img.shields.io/npm/v/@feihan-im/sdk.svg)](https://www.npmjs.com/package/@feihan-im/sdk)
 [![CI](https://github.com/feihan-im/openapi-sdk-js/actions/workflows/ci.yaml/badge.svg)](https://github.com/feihan-im/openapi-sdk-js/actions/workflows/ci.yaml)
-[![npm downloads](https://img.shields.io/npm/dm/@feihan-im/openapi-sdk.svg)](https://www.npmjs.com/package/@feihan-im/openapi-sdk)
+[![npm downloads](https://img.shields.io/npm/dm/@feihan-im/sdk.svg)](https://www.npmjs.com/package/@feihan-im/sdk)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/github/license/feihan-im/openapi-sdk-js)](LICENSE)
 
@@ -15,7 +15,7 @@
 ## 安装
 
 ```bash
-npm install @feihan-im/openapi-sdk
+npm install @feihan-im/sdk
 ```
 
 WebSocket 功能在浏览器和 Node.js 22+ 中原生支持。Node.js < 22 需安装 [`ws`](https://www.npmjs.com/package/ws)：
@@ -27,7 +27,7 @@ npm install ws
 ## 快速开始
 
 ```typescript
-import { FeihanClient, MessageType_TEXT } from '@feihan-im/openapi-sdk';
+import { FeihanClient, MessageType_TEXT } from '@feihan-im/sdk';
 
 const client = await FeihanClient.create(
   'https://your-backend-url.com',
@@ -55,7 +55,7 @@ await client.close();
 `FeihanClient.create()` 支持通过可选参数配置客户端行为：
 
 ```typescript
-import { FeihanClient, LoggerLevel } from '@feihan-im/openapi-sdk';
+import { FeihanClient, LoggerLevel } from '@feihan-im/sdk';
 
 const client = await FeihanClient.create(
   'https://your-backend-url.com',

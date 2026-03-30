@@ -1,7 +1,8 @@
 {
-  "name": "@feihan-im/openapi-sdk",
+  "name": "@feihan-im/sdk",
   "version": "0.28.105",
-  "description": "@feihan-im/openapi-sdk - OpenAPI SDK for JavaScript/TypeScript",
+  "description": "飞函官方 OpenAPI SDK，支持 Node.js 和 Browser",
+  "author": "上海飞函安全科技有限公司",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -28,15 +29,15 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "openapi",
-    "sdk",
-    "im"
-  ],
+  "keywords": ["feihan", "飞函", "sdk", "im", "rtc", "drive", "self-hosted"],
   "license": "Apache-2.0",
+  "homepage": "https://feihanim.cn",
   "repository": {
     "type": "git",
-    "url": "https://github.com/feihan-im/openapi-sdk-js"
+    "url": "git+https://github.com/feihan-im/openapi-sdk-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/feihan-im/openapi-sdk-js/issues"
   },
   "peerDependencies": {
     "ws": "^8.0.0"

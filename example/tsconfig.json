@@ -9,8 +9,8 @@
     "skipLibCheck": true,
     "paths": {
       "@/*": ["../src/*"],
-      "@feihan-im/openapi-sdk": ["../src/index.ts"],
-      "@feihan-im/openapi-sdk/*": ["../src/*"]
+      "@feihan-im/sdk": ["../src/index.ts"],
+      "@feihan-im/sdk/*": ["../src/*"]
     }
   },
   "include": ["./**/*"]
