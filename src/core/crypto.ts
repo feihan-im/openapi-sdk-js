@@ -103,10 +103,10 @@ export async function sha256Hex(input: string): Promise<string> {
 }
 
 async function encryptAES256CBC(data: Uint8Array, key: Uint8Array): Promise<Uint8Array> {
-  const padded = pkcs7Pad(data);
+  // Web Crypto AES-CBC automatically applies PKCS7 padding, so no manual pad needed
   const iv = randomBytes(16);
   const cryptoKey = await crypto.subtle.importKey('raw', toBuffer(key), { name: 'AES-CBC' }, false, ['encrypt']);
-  const encrypted = await crypto.subtle.encrypt({ name: 'AES-CBC', iv: toBuffer(iv) }, cryptoKey, toBuffer(padded));
+  const encrypted = await crypto.subtle.encrypt({ name: 'AES-CBC', iv: toBuffer(iv) }, cryptoKey, toBuffer(data));
   // Return IV + ciphertext
   const result = new Uint8Array(iv.length + encrypted.byteLength);
   result.set(iv, 0);
@@ -126,22 +126,13 @@ async function decryptAES256CBC(data: Uint8Array, key: Uint8Array): Promise<Uint
   return new Uint8Array(decrypted);
 }
 
-function pkcs7Pad(data: Uint8Array): Uint8Array {
-  const blockSize = 16;
-  const padding = blockSize - (data.length % blockSize);
-  const padded = new Uint8Array(data.length + padding);
-  padded.set(data);
-  padded.fill(padding, data.length);
-  return padded;
-}
-
 // --- Compression ---
 
 async function compressGzip(data: Uint8Array): Promise<Uint8Array> {
   if (typeof CompressionStream !== 'undefined') {
     const stream = new CompressionStream('gzip');
     const writer = stream.writable.getWriter();
-    void writer.write(toBuffer(data));
+    void writer.write(new Uint8Array(data));
     void writer.close();
     const chunks: Uint8Array[] = [];
     const reader = stream.readable.getReader();
@@ -166,7 +157,7 @@ async function decompressGzip(data: Uint8Array): Promise<Uint8Array> {
   if (typeof DecompressionStream !== 'undefined') {
     const stream = new DecompressionStream('gzip');
     const writer = stream.writable.getWriter();
-    void writer.write(toBuffer(data));
+    void writer.write(new Uint8Array(data));
     void writer.close();
     const chunks: Uint8Array[] = [];
     const reader = stream.readable.getReader();

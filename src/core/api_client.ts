@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Config } from './config';
+import {
+  ApiError,
+} from './types';
 import type {
   ApiClient,
   ApiRequest,
@@ -126,7 +129,7 @@ export class DefaultApiClient implements ApiClient {
       if (req.withWebSocket) {
         const httpResp = await this.ws.httpRequest(httpReq);
         return {
-          json: async () => JSON.parse(new TextDecoder().decode(httpResp.body)),
+          json: async () => unwrapApiResponse(JSON.parse(new TextDecoder().decode(httpResp.body))),
           body: async () => httpResp.body instanceof Uint8Array ? httpResp.body : new Uint8Array(httpResp.body),
         };
       }
@@ -153,7 +156,7 @@ export class DefaultApiClient implements ApiClient {
       const httpResp = decodeHttpResponse(decryptedBytes);
 
       return {
-        json: async () => JSON.parse(new TextDecoder().decode(httpResp.body)),
+        json: async () => unwrapApiResponse(JSON.parse(new TextDecoder().decode(httpResp.body))),
         body: async () => httpResp.body instanceof Uint8Array ? httpResp.body : new Uint8Array(httpResp.body),
       };
     }
@@ -188,7 +191,7 @@ export class DefaultApiClient implements ApiClient {
 
     const resp = await this.config.httpClient.fetch(url, fetchInit);
     return {
-      json: async () => resp.json(),
+      json: async () => unwrapApiResponse(await resp.json()),
       body: async () => new Uint8Array(await resp.arrayBuffer()),
     };
   }
@@ -230,8 +233,8 @@ export class DefaultApiClient implements ApiClient {
   }
 
   private async fetchToken(): Promise<void> {
-    const timestamp = String(this.config.timeManager.getServerTimestamp());
-    const nonce = randomAlphanumeric(16);
+    const timestamp = this.config.timeManager.getServerTimestamp();
+    const nonce = randomInt(1e12);
     const signPayload = `${this.config.appId}:${timestamp}:${this.config.appSecret}:${nonce}`;
     const signature = await sha256Hex(signPayload);
 
@@ -244,9 +247,10 @@ export class DefaultApiClient implements ApiClient {
       },
       body: JSON.stringify({
         app_id: this.config.appId,
+        signature_version: 'v1',
+        signature,
         timestamp,
         nonce,
-        signature: `v1:${signature}`,
       }),
     });
 
@@ -254,8 +258,8 @@ export class DefaultApiClient implements ApiClient {
       code: number;
       msg: string;
       data?: {
-        access_token: string;
-        expires_in: number;
+        app_access_token: string;
+        app_access_token_expires_in: number;
       };
     };
 
@@ -263,9 +267,9 @@ export class DefaultApiClient implements ApiClient {
       throw new Error(`fetch token failed: code=${data.code}, msg=${data.msg}`);
     }
 
-    this.token = data.data.access_token;
+    this.token = data.data.app_access_token;
     const now = this.config.timeManager.getServerTimestamp();
-    this.tokenExpiresAt = now + (data.data.expires_in - 60) * 1000;
+    this.tokenExpiresAt = now + (data.data.app_access_token_expires_in - 60) * 1000;
     this.tokenRefreshAt = this.tokenExpiresAt - 5 * 60 * 1000;
   }
 
@@ -324,7 +328,7 @@ export class DefaultApiClient implements ApiClient {
 
     this.config.timeManager.syncServerTimestamp(data.data.timestamp);
     this.pingCalled = true;
-    this.pingExpiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+    this.pingExpiresAt = Date.now() + 60 * 60 * 1000; // 1 hour
     this.config.logger.info(`ping ok, server version=${data.data.version}, org_code=${data.data.org_code}`);
   }
 }
@@ -341,4 +345,22 @@ function randomAlphanumeric(size: number): string {
     result += ALPHANUMERIC[bytes[i] % 62];
   }
   return result;
+}
+
+function unwrapApiResponse(raw: unknown): unknown {
+  const resp = raw as { code?: number; msg?: string; log_id?: string; data?: unknown };
+  if (resp.code !== 0) {
+    throw new ApiError(resp.code ?? -1, resp.msg ?? 'unknown error', resp.log_id ?? '', resp.data);
+  }
+  return resp.data;
+}
+
+function randomInt(max: number): number {
+  const bytes = new Uint8Array(8);
+  crypto.getRandomValues(bytes);
+  let value = 0;
+  for (let i = 0; i < 8; i++) {
+    value = value * 256 + bytes[i];
+  }
+  return value % max;
 }

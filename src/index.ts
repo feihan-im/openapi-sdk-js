@@ -4,12 +4,12 @@
 export { FeihanClient } from '@/client';
 export type { FeihanClientOptions } from '@/client';
 export { LoggerLevel } from '@/core/types';
+export { ApiError } from '@/core/types';
 export type {
   Int64,
   ApiClient,
   ApiRequest,
   ApiResponse,
-  ApiError,
   EventHeader,
   HttpClient,
   Logger,
@@ -17,3 +17,6 @@ export type {
 } from '@/core/types';
 export type { Config } from '@/core/config';
 export { VERSION, USER_AGENT } from '@/core/version';
+
+// Service exports
+export * from '@/service/im/v1/index';

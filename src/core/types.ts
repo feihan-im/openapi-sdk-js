@@ -21,11 +21,20 @@ export interface ApiResponse {
   body(): Promise<Uint8Array>;
 }
 
-export interface ApiError {
+export class ApiError extends Error {
   code: number;
   msg: string;
   log_id: string;
   data?: unknown;
+
+  constructor(code: number, msg: string, logId: string = '', data?: unknown) {
+    super(`ApiError[code=${code}, logId=${logId}, msg=${msg}]`);
+    this.name = 'ApiError';
+    this.code = code;
+    this.msg = msg;
+    this.log_id = logId;
+    this.data = data;
+  }
 }
 
 export interface ApiClient {
