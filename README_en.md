@@ -27,7 +27,7 @@ npm install ws
 ## Quick Start
 
 ```typescript
-import { FeihanClient } from '@feihan-im/openapi-sdk';
+import { FeihanClient, MessageType_TEXT } from '@feihan-im/openapi-sdk';
 
 const client = await FeihanClient.create(
   'https://your-backend-url.com',
@@ -42,7 +42,7 @@ await client.preheat();
 // Call API
 const resp = await client.Im.v1.Message.sendMessage({
   chat_id: 'chat-id',
-  message_type: 'text',
+  message_type: MessageType_TEXT,
   message_content: { text: { content: 'Feihan new version released!' } },
 });
 console.log(resp);
@@ -91,7 +91,7 @@ API responses include `code` and `msg` fields. A `code` of `0` indicates success
 ```typescript
 const resp = await client.Im.v1.Message.sendMessage({
   chat_id: 'chat-id',
-  message_type: 'text',
+  message_type: MessageType_TEXT,
   message_content: { text: { content: 'Feihan new version released!' } },
 });
 if (resp.code !== 0) {

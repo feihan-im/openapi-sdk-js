@@ -27,7 +27,7 @@ npm install ws
 ## 快速开始
 
 ```typescript
-import { FeihanClient } from '@feihan-im/openapi-sdk';
+import { FeihanClient, MessageType_TEXT } from '@feihan-im/openapi-sdk';
 
 const client = await FeihanClient.create(
   'https://your-backend-url.com',
@@ -41,7 +41,7 @@ await client.preheat();
 // 调用 API
 const resp = await client.Im.v1.Message.sendMessage({
   chat_id: 'chat-id',
-  message_type: 'text',
+  message_type: MessageType_TEXT,
   message_content: { text: { content: '飞函新版本发布！' } },
 });
 console.log(resp);
@@ -90,7 +90,7 @@ API 调用返回的响应中包含 `code` 和 `msg` 字段，`code` 为 `0` 表�
 ```typescript
 const resp = await client.Im.v1.Message.sendMessage({
   chat_id: 'chat-id',
-  message_type: 'text',
+  message_type: MessageType_TEXT,
   message_content: { text: { content: '飞函新版本发布！' } },
 });
 if (resp.code !== 0) {
