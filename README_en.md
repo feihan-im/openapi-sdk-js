@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@feihan-im/openapi-sdk.svg)](https://www.npmjs.com/package/@feihan-im/openapi-sdk)
 [![License](https://img.shields.io/github/license/feihan-im/openapi-sdk-js)](LICENSE)
 
-English | [中文](README_zh.md)
+English | [中文](README.md)
 
 Feihan is a secure, self-hosted productivity platform, integrating instant messaging, organizational structures, video conferencing, and file storage.
 
