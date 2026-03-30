@@ -1,6 +1,9 @@
 # Feihan IM OpenAPI SDK - JavaScript
 
 [![npm version](https://img.shields.io/npm/v/@feihan-im/openapi-sdk.svg)](https://www.npmjs.com/package/@feihan-im/openapi-sdk)
+[![CI](https://github.com/feihan-im/openapi-sdk-js/actions/workflows/ci.yaml/badge.svg)](https://github.com/feihan-im/openapi-sdk-js/actions/workflows/ci.yaml)
+[![npm downloads](https://img.shields.io/npm/dm/@feihan-im/openapi-sdk.svg)](https://www.npmjs.com/package/@feihan-im/openapi-sdk)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/github/license/feihan-im/openapi-sdk-js)](LICENSE)
 
 English | [中文](README.md)
