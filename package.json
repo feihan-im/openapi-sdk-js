@@ -1,6 +1,6 @@
 {
   "name": "@feihan-im/openapi-sdk",
-  "version": "0.28.100",
+  "version": "0.28.101",
   "description": "@feihan-im/openapi-sdk - OpenAPI SDK for JavaScript/TypeScript",
   "type": "module",
   "main": "./dist/index.cjs",
