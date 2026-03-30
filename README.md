@@ -39,7 +39,7 @@ const client = await FeihanClient.create(
 await client.preheat();
 
 // 调用 API
-const resp = await client.Im.v1.Message.sendMessage({
+const resp = await client.Im.Message.sendMessage({
   chat_id: 'chat-id',
   message_type: MessageType_TEXT,
   message_content: { text: { content: '飞函新版本发布！' } },
@@ -75,12 +75,12 @@ const client = await FeihanClient.create(
 
 ```typescript
 // 注册事件处理函数
-const handlerId = client.Im.v1.Message.Event.onMessageReceive((event) => {
+const handlerId = client.Im.Message.Event.onMessageReceive((event) => {
   console.log('收到消息:', event);
 });
 
 // 取消订阅
-client.Im.v1.Message.Event.offMessageReceive(handlerId);
+client.Im.Message.Event.offMessageReceive(handlerId);
 ```
 
 ## 错误处理
@@ -88,7 +88,7 @@ client.Im.v1.Message.Event.offMessageReceive(handlerId);
 API 调用返回的响应中包含 `code` 和 `msg` 字段，`code` 为 `0` 表示请求成功：
 
 ```typescript
-const resp = await client.Im.v1.Message.sendMessage({
+const resp = await client.Im.Message.sendMessage({
   chat_id: 'chat-id',
   message_type: MessageType_TEXT,
   message_content: { text: { content: '飞函新版本发布！' } },

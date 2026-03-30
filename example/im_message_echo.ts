@@ -10,19 +10,19 @@ async function main() {
     'TestAppSecret2',
   );
 
-  client.Im.v1.Message.Event.onMessageReceive(async (event) => {
+  client.Im.Message.Event.onMessageReceive(async (event) => {
     console.log('Message received:', JSON.stringify(event, null, 2));
 
-    client.Im.v1.Chat.createTyping({
+    client.Im.Chat.createTyping({
       chat_id: event.body.message?.chat_id,
     });
 
-    await client.Im.v1.Message.readMessage({
+    await client.Im.Message.readMessage({
       message_id: event.body.message?.message_id,
     });
 
     try {
-      await client.Im.v1.Message.sendMessage({
+      await client.Im.Message.sendMessage({
         message_type: MessageType_CARD,
         message_content: {
           card: {
@@ -64,7 +64,7 @@ async function main() {
       console.error('Send message failed:', err);
     }
 
-    client.Im.v1.Chat.deleteTyping({
+    client.Im.Chat.deleteTyping({
       chat_id: event.body.message?.chat_id,
     });
   });

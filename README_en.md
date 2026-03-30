@@ -40,7 +40,7 @@ const client = await FeihanClient.create(
 await client.preheat();
 
 // Call API
-const resp = await client.Im.v1.Message.sendMessage({
+const resp = await client.Im.Message.sendMessage({
   chat_id: 'chat-id',
   message_type: MessageType_TEXT,
   message_content: { text: { content: 'Feihan new version released!' } },
@@ -76,12 +76,12 @@ Receive real-time events via WebSocket:
 
 ```typescript
 // Register event handler
-const handlerId = client.Im.v1.Message.Event.onMessageReceive((event) => {
+const handlerId = client.Im.Message.Event.onMessageReceive((event) => {
   console.log('Message received:', event);
 });
 
 // Unsubscribe
-client.Im.v1.Message.Event.offMessageReceive(handlerId);
+client.Im.Message.Event.offMessageReceive(handlerId);
 ```
 
 ## Error Handling
@@ -89,7 +89,7 @@ client.Im.v1.Message.Event.offMessageReceive(handlerId);
 API responses include `code` and `msg` fields. A `code` of `0` indicates success:
 
 ```typescript
-const resp = await client.Im.v1.Message.sendMessage({
+const resp = await client.Im.Message.sendMessage({
   chat_id: 'chat-id',
   message_type: MessageType_TEXT,
   message_content: { text: { content: 'Feihan new version released!' } },
