@@ -27,9 +27,9 @@ npm install ws
 ## Quick Start
 
 ```typescript
-import { Client } from '@feihan-im/openapi-sdk';
+import { FeihanClient } from '@feihan-im/openapi-sdk';
 
-const client = await Client.create(
+const client = await FeihanClient.create(
   'https://your-backend-url.com',
   'your-app-id',
   'your-app-secret',
@@ -53,12 +53,12 @@ await client.close();
 
 ## Configuration
 
-`Client.create()` accepts an optional options object to configure client behavior:
+`FeihanClient.create()` accepts an optional options object to configure client behavior:
 
 ```typescript
-import { Client, LoggerLevel } from '@feihan-im/openapi-sdk';
+import { FeihanClient, LoggerLevel } from '@feihan-im/openapi-sdk';
 
-const client = await Client.create(
+const client = await FeihanClient.create(
   'https://your-backend-url.com',
   'your-app-id',
   'your-app-secret',

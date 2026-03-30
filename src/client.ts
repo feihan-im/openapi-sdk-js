@@ -17,7 +17,7 @@ import { DefaultLogger } from '@/core/logger';
 import { DefaultTimeManager } from '@/core/time_manager';
 import { Service as ImService } from '@/service/im/index';
 
-export interface ClientOptions {
+export interface FeihanClientOptions {
   httpClient?: HttpClient;
   requestTimeout?: number;
   enableEncryption?: boolean;
@@ -28,7 +28,7 @@ export interface ClientOptions {
   jsonUnmarshal?: Unmarshaller;
 }
 
-export class Client {
+export class FeihanClient {
   public readonly config: Config;
   public readonly apiClient: ApiClient;
   public readonly Im: ImService;
@@ -43,8 +43,8 @@ export class Client {
     backendUrl: string,
     appId: string,
     appSecret: string,
-    options: ClientOptions = {},
-  ): Promise<Client> {
+    options: FeihanClientOptions = {},
+  ): Promise<FeihanClient> {
     // Normalize backend URL
     backendUrl = backendUrl.replace(/\/+$/, '');
 
@@ -72,7 +72,7 @@ export class Client {
     await apiClient.init();
     config.apiClient = apiClient;
 
-    return new Client(config);
+    return new FeihanClient(config);
   }
 
   async preheat(): Promise<void> {

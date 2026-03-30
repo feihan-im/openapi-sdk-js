@@ -1,8 +1,8 @@
 // Copyright (c) 2026 上海飞函安全科技有限公司 (Shanghai Feihan Security Technology Co., Ltd.)
 // SPDX-License-Identifier: Apache-2.0
 
-export { Client } from '@/client';
-export type { ClientOptions } from '@/client';
+export { FeihanClient } from '@/client';
+export type { FeihanClientOptions } from '@/client';
 export { LoggerLevel } from '@/core/types';
 export type {
   Int64,
