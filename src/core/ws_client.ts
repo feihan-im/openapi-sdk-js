@@ -251,7 +251,7 @@ export class WsClient {
               this.config.logger.error('ws error', err);
             };
 
-            this.lastMessageAt = Date.now();
+            this.lastMessageAt = this.config.timeManager.getSystemTimestamp();
             this.startHealthCheck();
             this.startReconnectCheck();
             this.reconnectAttempt = 0;
@@ -282,7 +282,7 @@ export class WsClient {
   }
 
   private async handleMessage(event: MessageEvent): Promise<void> {
-    this.lastMessageAt = Date.now();
+    this.lastMessageAt = this.config.timeManager.getSystemTimestamp();
 
     try {
       const data = new Uint8Array(event.data as ArrayBuffer);
@@ -343,10 +343,10 @@ export class WsClient {
     this.isReconnecting = true;
 
     const delay = this.getReconnectDelay();
-    this.config.logger.info(`ws reconnecting in ${delay}ms (attempt ${this.reconnectAttempt + 1})`);
+    this.config.logger.info(`ws reconnecting in ${delay}ms (attempt ${this.reconnectAttempt})`);
+    this.reconnectAttempt++;
 
     this.reconnectTimer = setTimeout(async () => {
-      this.reconnectAttempt++;
       try {
         await this.connect();
         this.config.logger.info('ws reconnected');
@@ -360,15 +360,15 @@ export class WsClient {
 
   private getReconnectDelay(): number {
     const attempt = this.reconnectAttempt;
-    if (attempt === 0) {
+    if (attempt <= 1) {
       return 250 + Math.floor(Math.random() * 250);
     }
-    if (attempt <= 4) {
+    if (attempt <= 5) {
       return 750 + Math.floor(Math.random() * 500);
     }
-    const base = Math.min(10000, Math.max(750, (attempt - 4) * 2000));
-    const jitter = Math.floor(Math.random() * 1000);
-    return Math.min(15000, base + jitter);
+    const min = Math.min(10000, Math.max(750, (attempt - 5 - 1) * 2000));
+    const max = Math.min(15000, 1000 + (attempt - 5) * 2000);
+    return min + Math.floor(Math.random() * (max - min));
   }
 
   private startHealthCheck(): void {
@@ -393,7 +393,7 @@ export class WsClient {
   private startReconnectCheck(): void {
     this.stopReconnectCheck();
     this.reconnectCheckTimer = setInterval(() => {
-      if (Date.now() - this.lastMessageAt > ALIVE_TIMEOUT) {
+      if (this.lastMessageAt !== 0 && this.config.timeManager.getSystemTimestamp() - this.lastMessageAt > ALIVE_TIMEOUT) {
         this.config.logger.warn('ws alive timeout, reconnecting');
         this.clearTimers();
         if (this.socket) {

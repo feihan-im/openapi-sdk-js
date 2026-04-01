@@ -94,7 +94,7 @@ export class DefaultApiClient implements ApiClient {
     if (req.queryParams) {
       const params = new URLSearchParams();
       for (const [key, value] of Object.entries(req.queryParams)) {
-        if (value) params.set(key, value);
+        params.set(key, value);
       }
       const qs = params.toString();
       if (qs) url += '?' + qs;
@@ -127,6 +127,9 @@ export class DefaultApiClient implements ApiClient {
 
       // WebSocket path
       if (req.withWebSocket) {
+        if (!httpReq.headers!['Authorization']) {
+          httpReq.headers!['Authorization'] = `Bearer ${token}`;
+        }
         const httpResp = await this.ws.httpRequest(httpReq);
         return {
           json: async () => unwrapApiResponse(JSON.parse(new TextDecoder().decode(httpResp.body))),
